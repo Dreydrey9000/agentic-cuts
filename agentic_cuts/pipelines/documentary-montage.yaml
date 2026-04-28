@@ -1,0 +1,102 @@
+name: documentary-montage
+version: "0.1"
+description: >-
+  Free real-footage path nobody else does well. Builds a CLIP-indexed corpus
+  from open archives (Archive.org, NASA, Wikimedia) plus optional free-key
+  sources (Pexels, Unsplash, Pixabay), then cuts an actual documentary or
+  tone-poem montage from real motion footage. Zero paid video models required.
+type: footage_based
+
+stages:
+  - name: brief
+    director_skill: skills/pipelines/documentary-montage/brief.md
+    capabilities_required: []
+    artifacts_produced: [brief]
+    human_approval_default: true
+    review_focus:
+      - explicit "real footage only" flag captured
+      - tone (elegiac, analytical, archival, dreamlike) captured
+
+  - name: corpus_build
+    director_skill: skills/pipelines/documentary-montage/corpus-build.md
+    capabilities_required: [stock_footage, stock_image]
+    artifacts_produced: [corpus_index, source_attribution]
+    human_approval_default: false
+    review_focus:
+      - corpus has minimum N motion clips (not just stills)
+      - every asset has license + attribution recorded
+
+  - name: embed
+    director_skill: skills/pipelines/documentary-montage/embed.md
+    capabilities_required: []
+    artifacts_produced: [corpus_embeddings]
+    human_approval_default: false
+    review_focus:
+      - every clip has a CLIP embedding
+      - representative frame extracted per clip for the agent to inspect
+
+  - name: script
+    director_skill: skills/pipelines/documentary-montage/script.md
+    capabilities_required: []
+    artifacts_produced: [script, narration_optional]
+    human_approval_default: true
+    review_focus:
+      - script grounded in research (cited sources)
+      - matches tone declared in brief
+
+  - name: arrange
+    director_skill: skills/pipelines/documentary-montage/arrange.md
+    capabilities_required: []
+    artifacts_produced: [edit_plan, retrieval_log]
+    human_approval_default: true
+    review_focus:
+      - retrieved clips actually match the beat they were placed at
+      - decision log shows top-N candidates considered per beat
+
+  - name: score
+    director_skill: skills/pipelines/documentary-montage/score.md
+    capabilities_required: [music_gen, sfx_gen]
+    artifacts_produced: [music_track]
+    human_approval_default: false
+    optional: true
+
+  - name: caption
+    director_skill: skills/pipelines/documentary-montage/caption.md
+    capabilities_required: [caption]
+    artifacts_produced: [captioned_montage]
+    human_approval_default: false
+    optional: true
+
+  - name: render
+    director_skill: skills/pipelines/documentary-montage/render.md
+    capabilities_required: [compose, stitch, publish]
+    artifacts_produced: [final_montage, render_report]
+    human_approval_default: true
+    review_focus:
+      - slideshow risk gate passes (not 8 stills called a video)
+      - color grade consistent across stitched clips
+
+review:
+  reviewer_skill: skills/meta/reviewer.md
+  max_rounds: 2
+
+budget:
+  default_cap_usd: 0.30
+  mode: cap
+
+checkpoint:
+  policy: guided
+
+delivery_promise:
+  target_aspect: "16:9"
+  requires_motion: true
+  requires_audio: true
+  requires_music: true
+  duration_tolerance_sec: 3.0
+
+playbooks:
+  - styles/playbooks/archival-warm.yaml
+  - styles/playbooks/elegiac-cool.yaml
+  - styles/playbooks/adam-curtis-style.yaml
+
+tags: [documentary, archival, real_footage, zero_key]

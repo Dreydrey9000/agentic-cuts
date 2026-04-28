@@ -25,6 +25,20 @@ from agentic_cuts.lib.slideshow_risk import SlideshowRisk, detect_slideshow_risk
 from agentic_cuts.lib.run_cache import RunCache, cache_key
 from agentic_cuts.lib.skill_rag import SkillRAG
 from agentic_cuts.lib.frame_perfect_cut import keyframe_aligned_cut, plan_cut
+from agentic_cuts.lib.pipeline_manifest import (
+    BudgetConfig,
+    CheckpointConfig,
+    CheckpointPolicy,
+    DeliveryPromiseDefaults,
+    PipelineManifest,
+    ReviewConfig,
+    StageManifest,
+)
+from agentic_cuts.lib.pipeline_loader import (
+    PipelineLoadError,
+    discover_pipelines,
+    load_manifest,
+)
 
 __all__ = [
     "BaseTool", "ToolResult", "Capability", "Tier",
@@ -38,6 +52,9 @@ __all__ = [
     "RunCache", "cache_key",
     "SkillRAG",
     "keyframe_aligned_cut", "plan_cut",
+    "PipelineManifest", "StageManifest", "ReviewConfig", "BudgetConfig",
+    "CheckpointConfig", "CheckpointPolicy", "DeliveryPromiseDefaults",
+    "load_manifest", "discover_pipelines", "PipelineLoadError",
 ]
 
 __version__ = "0.1.0"
