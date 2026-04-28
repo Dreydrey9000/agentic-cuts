@@ -25,6 +25,17 @@ All notable changes to this project will be documented here. Format follows [Kee
 - `agentic_cuts/pipelines/animated-explainer.yaml` — Zero-key entry point. Free local stack out of the box.
 - 12 new tests covering: 5-pipeline discovery, schema validation per pipeline, malformed YAML rejection, missing-field rejection, duplicate-stage-name rejection, stage lookup helpers. **44 tests passing total.**
 
+### Added (Task 14 — whitelist mechanism)
+- `agentic_cuts/lib/brand_kit.py` — Pydantic schema for tenant brand kits. `BrandKit`, `BrandColor`, `BrandTypography`, `BrandLogo`, `BrandVoice`, `BrandIntroOutro`, `BrandCaptionDefaults`. Strict validation, hex-color check, duplicate-name guard, palette non-empty guard.
+- `setup-tenant.sh` — interactive scaffolder. Prompts for slug, display name, primary/accent hex, font, voice, default caption preset, visibility. Creates GitHub repo via `gh`, clones locally to `~/My Apps/agentic-cuts-<slug>/`, wires core engine as a git submodule, generates `brand-kit.yaml` from prompts, pushes a `bootstrap` branch.
+- `brand-kit.example.yaml` — annotated reference brand kit at repo root.
+
+### Added (Task 9 — kinetic captions preset library)
+- `agentic_cuts/lib/caption_preset.py` — Pydantic schema for caption presets. `CaptionPreset`, typography/colors/position/safe-zone/motion/emphasis sub-models. `StyleFamily` enum (kinetic, animated_word, sentence, minimal, quote). Strict validation, slug-name guard.
+- `agentic_cuts/captions/` — 20 launch presets (JSON spec, future Remotion components):
+  `tiktok-yellow-bold`, `hormozi-style`, `mr-beast-pop`, `podcast-clean`, `cinematic-fade`, `minimal-white`, `kinetic-bounce`, `quote-card`, `ig-reel-classic`, `youtube-shorts-clean`, `documentary-subtitle`, `meme-impact`, `educational-clear`, `news-ticker`, `vlog-handwritten`, `dark-mode-neon`, `comedy-zoom`, `luxury-serif`, `courtroom-mono`, `tiktok-emoji-burst` (the only opt-in emoji preset; all others honor the no-emojis rule).
+- 36 new tests (8 brand-kit + 28 caption-preset including 20 parametrized per-preset validations). **80 tests passing total.**
+
 ### Designed (architecture decisions, all confirmed by Drey 2026-04-28)
 - Tenant ↔ core link: git submodule for v0, switch to published `pip`/`npm` packages once 5+ tenants exist.
 - Timeline UI: local-first (Tauri or Electron) — HN explicitly hates browser editing.

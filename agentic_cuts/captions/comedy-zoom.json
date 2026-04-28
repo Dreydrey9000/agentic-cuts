@@ -1,0 +1,45 @@
+{
+  "name": "comedy-zoom",
+  "display_name": "Comedy Zoom",
+  "description": "Built for comedy reels — captions stay calm during setup, then scale up + change color hard on the punchline word. Pairs naturally with comedy zoom B-roll.",
+  "style_family": "kinetic",
+  "typography": {
+    "family": "Inter",
+    "weight": 800,
+    "italic": false,
+    "text_transform": "preserve",
+    "size_pct_of_height": 0.052,
+    "line_height": 1.15,
+    "letter_spacing_em": 0.0
+  },
+  "colors": {
+    "text": "#ffffff",
+    "background": null,
+    "outline": "#0c0c0c",
+    "outline_width_px": 4,
+    "shadow": null,
+    "shadow_offset_px": [0, 0]
+  },
+  "position": {
+    "y_pct": 0.62,
+    "alignment": "center",
+    "max_width_pct": 0.82
+  },
+  "safe_zone": {
+    "top_pct": 0.10,
+    "bottom_pct": 0.20
+  },
+  "motion": {
+    "type": "scale_in",
+    "duration_ms": 160,
+    "easing": "spring"
+  },
+  "emphasis": {
+    "type": "color+scale",
+    "color": "#ff2d3a",
+    "scale_factor": 1.4
+  },
+  "max_words_per_card": 5,
+  "tags": ["comedy", "punchline", "skit", "reel"],
+  "contains_emojis": false
+}

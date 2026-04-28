@@ -39,6 +39,30 @@ from agentic_cuts.lib.pipeline_loader import (
     discover_pipelines,
     load_manifest,
 )
+from agentic_cuts.lib.brand_kit import (
+    BrandCaptionDefaults,
+    BrandColor,
+    BrandIntroOutro,
+    BrandKit,
+    BrandKitLoadError,
+    BrandLogo,
+    BrandTypography,
+    BrandVoice,
+    load_brand_kit,
+)
+from agentic_cuts.lib.caption_preset import (
+    CaptionColors,
+    CaptionEmphasis,
+    CaptionMotion,
+    CaptionPosition,
+    CaptionPreset,
+    CaptionPresetLoadError,
+    CaptionSafeZone,
+    CaptionTypography,
+    StyleFamily,
+    discover_presets,
+    load_preset,
+)
 
 __all__ = [
     "BaseTool", "ToolResult", "Capability", "Tier",
@@ -55,6 +79,11 @@ __all__ = [
     "PipelineManifest", "StageManifest", "ReviewConfig", "BudgetConfig",
     "CheckpointConfig", "CheckpointPolicy", "DeliveryPromiseDefaults",
     "load_manifest", "discover_pipelines", "PipelineLoadError",
+    "BrandKit", "BrandColor", "BrandTypography", "BrandLogo", "BrandVoice",
+    "BrandIntroOutro", "BrandCaptionDefaults", "load_brand_kit", "BrandKitLoadError",
+    "CaptionPreset", "CaptionTypography", "CaptionColors", "CaptionPosition",
+    "CaptionSafeZone", "CaptionMotion", "CaptionEmphasis", "StyleFamily",
+    "load_preset", "discover_presets", "CaptionPresetLoadError",
 ]
 
 __version__ = "0.1.0"

@@ -1,0 +1,64 @@
+# Agentic Cuts — Brand Kit Reference
+#
+# This is the schema reference for tenants. Each tenant repo
+# (agentic-cuts-<slug>) ships its own brand-kit.yaml at its root.
+# Validate with: python -c "from agentic_cuts import load_brand_kit; print(load_brand_kit('brand-kit.yaml'))"
+
+tenant_id: example-brand
+display_name: Example Brand
+description: Reference brand kit demonstrating every supported field.
+
+palette:
+  - name: primary
+    hex: "#ffd200"
+  - name: accent
+    hex: "#ff2d3a"
+  - name: ink
+    hex: "#0c0c0c"
+  - name: paper
+    hex: "#f5f1e8"
+
+primary_typography:
+  family: Inter
+  weight: 800
+  italic: false
+  fallback_stack: [system-ui, sans-serif]
+
+secondary_typography:
+  family: Playfair Display
+  weight: 700
+  italic: true
+  fallback_stack: [serif]
+
+logo:
+  light_path: assets/logo-light.png
+  dark_path: assets/logo-dark.png
+  placement: bottom_right
+  margin_pct: 0.04
+
+voice:
+  primary_voice: "kokoro/af_bella"
+  fallback_voice: "piper/en_US-libritts"
+  speaking_rate: 1.0
+  pitch: 0.0
+  style_hint: "warm, conversational, slight irreverence"
+
+intro_outro:
+  intro_clip_path: assets/intro.mp4
+  intro_duration_sec: 1.5
+  outro_clip_path: assets/outro.mp4
+  outro_duration_sec: 2.0
+
+captions:
+  default_preset: hormozi-style
+  accent_color_override: "#ffd200"
+  safe_zone_top_pct: 0.10
+  safe_zone_bottom_pct: 0.20
+
+default_pipelines:
+  - clip-factory
+  - talking-head
+  - podcast-repurpose
+
+hashtags: []
+no_emojis: true

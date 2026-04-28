@@ -1,0 +1,45 @@
+{
+  "name": "tiktok-emoji-burst",
+  "display_name": "TikTok Emoji Burst",
+  "description": "Opt-in preset that allows emojis on emphasis words for tenants who want them. Bouncy yellow text with occasional emoji bursts on key words. Disabled by default for tenants with no_emojis=true.",
+  "style_family": "kinetic",
+  "typography": {
+    "family": "Inter",
+    "weight": 900,
+    "italic": false,
+    "text_transform": "uppercase",
+    "size_pct_of_height": 0.058,
+    "line_height": 1.1,
+    "letter_spacing_em": 0.02
+  },
+  "colors": {
+    "text": "#ffd200",
+    "background": null,
+    "outline": "#000000",
+    "outline_width_px": 8,
+    "shadow": "#00000080",
+    "shadow_offset_px": [0, 4]
+  },
+  "position": {
+    "y_pct": 0.6,
+    "alignment": "center",
+    "max_width_pct": 0.82
+  },
+  "safe_zone": {
+    "top_pct": 0.12,
+    "bottom_pct": 0.22
+  },
+  "motion": {
+    "type": "bounce",
+    "duration_ms": 220,
+    "easing": "spring"
+  },
+  "emphasis": {
+    "type": "color+scale",
+    "color": "#ffffff",
+    "scale_factor": 1.2
+  },
+  "max_words_per_card": 3,
+  "tags": ["tiktok", "viral", "emoji_friendly", "high_energy"],
+  "contains_emojis": true
+}

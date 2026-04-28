@@ -1,0 +1,44 @@
+{
+  "name": "dark-mode-neon",
+  "display_name": "Dark Mode Neon",
+  "description": "Cyberpunk-leaning preset. Deep black text plate with neon cyan emphasis on the active word. For tech, gaming, and cyber-themed content.",
+  "style_family": "kinetic",
+  "typography": {
+    "family": "JetBrains Mono",
+    "weight": 700,
+    "italic": false,
+    "text_transform": "uppercase",
+    "size_pct_of_height": 0.05,
+    "line_height": 1.15,
+    "letter_spacing_em": 0.04
+  },
+  "colors": {
+    "text": "#e8e8e8",
+    "background": "#0c0c0ce6",
+    "outline": null,
+    "outline_width_px": 0,
+    "shadow": "#00ffff40",
+    "shadow_offset_px": [0, 0]
+  },
+  "position": {
+    "y_pct": 0.62,
+    "alignment": "center",
+    "max_width_pct": 0.8
+  },
+  "safe_zone": {
+    "top_pct": 0.10,
+    "bottom_pct": 0.20
+  },
+  "motion": {
+    "type": "scale_in",
+    "duration_ms": 180,
+    "easing": "ease_out"
+  },
+  "emphasis": {
+    "type": "color",
+    "color": "#00ffff"
+  },
+  "max_words_per_card": 4,
+  "tags": ["tech", "gaming", "cyberpunk", "dark"],
+  "contains_emojis": false
+}
