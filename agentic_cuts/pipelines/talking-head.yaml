@@ -1,0 +1,105 @@
+name: talking-head
+version: "0.1"
+description: >-
+  Footage-led speaker video. Input: raw self-shot footage (one or more takes)
+  plus optional script. Output: edited speaker reel with cuts on filler words,
+  optional B-roll, optional captions, optional dub.
+type: footage_based
+
+stages:
+  - name: brief
+    director_skill: skills/pipelines/talking-head/brief.md
+    capabilities_required: []
+    artifacts_produced: [brief]
+    human_approval_default: true
+    review_focus:
+      - "brief captures angle, audience, target duration, distribution platform"
+      - "explicit ask for or against captions, music, B-roll"
+
+  - name: ingest
+    director_skill: skills/pipelines/talking-head/ingest.md
+    capabilities_required: [scene_detect]
+    artifacts_produced: [source_meta, take_map]
+    human_approval_default: false
+
+  - name: transcribe
+    director_skill: skills/pipelines/talking-head/transcribe.md
+    capabilities_required: [stt]
+    artifacts_produced: [transcript, word_timings]
+    human_approval_default: false
+    review_focus:
+      - word-level timing on every word
+      - filler words ("um", "uh", "like") flagged for cut decisions
+
+  - name: select_takes
+    director_skill: skills/pipelines/talking-head/select-takes.md
+    capabilities_required: []
+    artifacts_produced: [chosen_takes, edit_decisions]
+    human_approval_default: true
+    review_focus:
+      - best take per beat picked, with rationale
+      - rejected takes have a one-line reason
+
+  - name: cut
+    director_skill: skills/pipelines/talking-head/cut.md
+    capabilities_required: [cut]
+    artifacts_produced: [cut_clip]
+    human_approval_default: false
+    review_focus:
+      - cuts on natural pauses, not mid-word
+      - filler removal does not create audio pop or visual jump
+
+  - name: enhance
+    director_skill: skills/pipelines/talking-head/enhance.md
+    capabilities_required: [color_grade]
+    artifacts_produced: [enhanced_clip]
+    human_approval_default: false
+    optional: true
+
+  - name: caption
+    director_skill: skills/pipelines/talking-head/caption.md
+    capabilities_required: [caption]
+    artifacts_produced: [captioned_clip]
+    human_approval_default: false
+    optional: true
+
+  - name: dub
+    director_skill: skills/pipelines/talking-head/dub.md
+    capabilities_required: [tts, lip_sync, translate]
+    artifacts_produced: [dubbed_clip]
+    human_approval_default: true
+    optional: true
+    review_focus:
+      - lip-sync drift under 80ms
+      - voice-clone preserves original timbre
+
+  - name: render
+    director_skill: skills/pipelines/talking-head/render.md
+    capabilities_required: [compose, publish]
+    artifacts_produced: [final_clip, render_report]
+    human_approval_default: true
+
+review:
+  reviewer_skill: skills/meta/reviewer.md
+  max_rounds: 2
+
+budget:
+  default_cap_usd: 0.75
+  mode: cap
+
+checkpoint:
+  policy: guided
+
+delivery_promise:
+  target_aspect: "9:16"
+  requires_motion: true
+  requires_audio: true
+  requires_captions: false
+  requires_narration: false
+  duration_tolerance_sec: 2.0
+
+playbooks:
+  - styles/playbooks/clean-modern.yaml
+  - styles/playbooks/cinematic-warm.yaml
+
+tags: [creator, speaker, daily_driver]

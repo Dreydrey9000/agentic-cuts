@@ -1,0 +1,97 @@
+name: clip-factory
+version: "0.1"
+description: >-
+  Long-form footage to a ranked batch of vertical short-form clips.
+  Drey's daily Viral Editz driver. Input: 30-90 minute podcast / talking-head /
+  Zoom recording. Output: 8-15 ranked verticals with kinetic captions, ready
+  for TikTok / Reels / Shorts.
+type: footage_based
+
+stages:
+  - name: ingest
+    director_skill: skills/pipelines/clip-factory/ingest.md
+    capabilities_required: [scene_detect]
+    artifacts_produced: [source_meta, scene_map]
+    human_approval_default: false
+    review_focus:
+      - source video probed cleanly
+      - scene boundaries land on speech pauses, not mid-sentence
+
+  - name: transcribe
+    director_skill: skills/pipelines/clip-factory/transcribe.md
+    capabilities_required: [stt, diarization]
+    artifacts_produced: [transcript, word_timings, speaker_map]
+    human_approval_default: false
+    review_focus:
+      - word-level timing is present (every word has start/end ms)
+      - speaker labels match faces if multi-cam
+
+  - name: rank
+    director_skill: skills/pipelines/clip-factory/rank.md
+    capabilities_required: []
+    artifacts_produced: [virality_scorecard, candidate_clips]
+    human_approval_default: true
+    review_focus:
+      - score considers hook, payoff, completeness, length fit
+      - candidate clips do not split a sentence
+
+  - name: cut
+    director_skill: skills/pipelines/clip-factory/cut.md
+    capabilities_required: [cut]
+    artifacts_produced: [cut_clips]
+    human_approval_default: false
+    review_focus:
+      - cuts use frame-perfect (keyframe-aligned) where possible
+      - each clip is within target duration ±tolerance
+
+  - name: vertical_crop
+    director_skill: skills/pipelines/clip-factory/vertical-crop.md
+    capabilities_required: []
+    artifacts_produced: [vertical_clips]
+    human_approval_default: false
+    review_focus:
+      - active speaker stays in safe zone (above 65% height)
+      - face-tracking does not jitter on cuts
+
+  - name: caption
+    director_skill: skills/pipelines/clip-factory/caption.md
+    capabilities_required: [caption]
+    artifacts_produced: [captioned_clips]
+    human_approval_default: false
+    review_focus:
+      - captions use one of the registered preset styles
+      - text never overlaps platform UI safe zones
+
+  - name: render
+    director_skill: skills/pipelines/clip-factory/render.md
+    capabilities_required: [compose, publish]
+    artifacts_produced: [final_clips, render_report]
+    human_approval_default: true
+    review_focus:
+      - ffprobe shows correct resolution, fps, codec for target platform
+      - audio levels normalized
+
+review:
+  reviewer_skill: skills/meta/reviewer.md
+  max_rounds: 2
+
+budget:
+  default_cap_usd: 0.50
+  mode: cap
+
+checkpoint:
+  policy: guided
+
+delivery_promise:
+  target_aspect: "9:16"
+  requires_motion: true
+  requires_audio: true
+  requires_captions: true
+  duration_tolerance_sec: 1.0
+
+playbooks:
+  - styles/playbooks/podcast-clean.yaml
+  - styles/playbooks/hormozi-style.yaml
+  - styles/playbooks/clean-modern.yaml
+
+tags: [short_form, repurpose, viral_editz, daily_driver]

@@ -1,0 +1,98 @@
+name: podcast-repurpose
+version: "0.1"
+description: >-
+  Audio-first pipeline. Input: long podcast (60-180 min, two or more speakers).
+  Output: 5-12 ranked highlight clips with speaker-aware diarization, B-roll
+  pulls, kinetic captions, audiogram fallback for audio-only highlights.
+type: audio_first
+
+stages:
+  - name: ingest
+    director_skill: skills/pipelines/podcast-repurpose/ingest.md
+    capabilities_required: []
+    artifacts_produced: [source_meta]
+    human_approval_default: false
+
+  - name: transcribe
+    director_skill: skills/pipelines/podcast-repurpose/transcribe.md
+    capabilities_required: [stt]
+    artifacts_produced: [transcript, word_timings]
+    human_approval_default: false
+    review_focus:
+      - word-level timing on every word
+      - confidence scores surfaced for low-confidence segments
+
+  - name: diarize
+    director_skill: skills/pipelines/podcast-repurpose/diarize.md
+    capabilities_required: [diarization]
+    artifacts_produced: [speaker_map, speaker_segments]
+    human_approval_default: true
+    review_focus:
+      - each speaker labeled with consistent ID across full episode
+      - speaker assignments verified against any provided seed clips
+
+  - name: identify_highlights
+    director_skill: skills/pipelines/podcast-repurpose/identify-highlights.md
+    capabilities_required: []
+    artifacts_produced: [highlight_candidates, virality_scorecard]
+    human_approval_default: true
+    review_focus:
+      - candidates have hook + payoff + standalone meaning
+      - score considers replayability, surprise, completeness
+
+  - name: cut
+    director_skill: skills/pipelines/podcast-repurpose/cut.md
+    capabilities_required: [cut]
+    artifacts_produced: [cut_clips]
+    human_approval_default: false
+    review_focus:
+      - cuts on natural sentence boundaries
+      - frame-perfect where keyframes allow
+
+  - name: source_visuals
+    director_skill: skills/pipelines/podcast-repurpose/source-visuals.md
+    capabilities_required: [stock_footage, image_gen]
+    artifacts_produced: [b_roll_assets, audiogram_template]
+    human_approval_default: false
+    review_focus:
+      - B-roll relevant to topic, not generic stock
+      - audiogram template applied when no on-camera footage
+
+  - name: caption
+    director_skill: skills/pipelines/podcast-repurpose/caption.md
+    capabilities_required: [caption]
+    artifacts_produced: [captioned_clips]
+    human_approval_default: false
+    review_focus:
+      - speaker name surfaced on caption track when speakers change
+      - quote-style emphasis on payoff moments
+
+  - name: render
+    director_skill: skills/pipelines/podcast-repurpose/render.md
+    capabilities_required: [compose, publish]
+    artifacts_produced: [final_clips, render_report]
+    human_approval_default: true
+
+review:
+  reviewer_skill: skills/meta/reviewer.md
+  max_rounds: 2
+
+budget:
+  default_cap_usd: 0.75
+  mode: cap
+
+checkpoint:
+  policy: guided
+
+delivery_promise:
+  target_aspect: "9:16"
+  requires_motion: true
+  requires_audio: true
+  requires_captions: true
+  duration_tolerance_sec: 1.5
+
+playbooks:
+  - styles/playbooks/podcast-clean.yaml
+  - styles/playbooks/hormozi-style.yaml
+
+tags: [podcast, repurpose, high_client_demand]

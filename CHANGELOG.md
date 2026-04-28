@@ -15,6 +15,16 @@ All notable changes to this project will be documented here. Format follows [Kee
 - `requirements.txt` + `requirements-dev.txt` — minimal runtime deps, separated test/dev deps.
 - `.gitignore` augmentation — fixed gh-default `lib/` rule (was masking our package), added macOS, IDE, runtime dirs, SQLite caches, Node patterns.
 
+### Added (Task 7 — 5 launch pipelines)
+- `agentic_cuts/lib/pipeline_manifest.py` — Pydantic schema for YAML pipeline manifests. `PipelineManifest`, `StageManifest`, `ReviewConfig`, `BudgetConfig`, `CheckpointConfig`, `CheckpointPolicy`, `DeliveryPromiseDefaults`. Strict validation (extra="forbid"), duplicate-stage-name guard.
+- `agentic_cuts/lib/pipeline_loader.py` — `load_manifest()` + `discover_pipelines()`. Handles malformed YAML, validation errors, and duplicate names with named exceptions.
+- `agentic_cuts/pipelines/clip-factory.yaml` — Drey's daily VE driver. 7 stages: ingest → transcribe → rank → cut → vertical_crop → caption → render. 9:16 aspect, captions required, hard cap at $0.50.
+- `agentic_cuts/pipelines/talking-head.yaml` — Drey's content + clients. 9 stages including optional dub. 9:16 aspect.
+- `agentic_cuts/pipelines/documentary-montage.yaml` — Real-footage path nobody else does well. CLIP-indexed corpus from Archive.org/NASA/Wikimedia. 16:9 aspect, $0.30 cap (zero-key friendly).
+- `agentic_cuts/pipelines/podcast-repurpose.yaml` — Audio-first, speaker-aware. 8 stages with diarization gate.
+- `agentic_cuts/pipelines/animated-explainer.yaml` — Zero-key entry point. Free local stack out of the box.
+- 12 new tests covering: 5-pipeline discovery, schema validation per pipeline, malformed YAML rejection, missing-field rejection, duplicate-stage-name rejection, stage lookup helpers. **44 tests passing total.**
+
 ### Designed (architecture decisions, all confirmed by Drey 2026-04-28)
 - Tenant ↔ core link: git submodule for v0, switch to published `pip`/`npm` packages once 5+ tenants exist.
 - Timeline UI: local-first (Tauri or Electron) — HN explicitly hates browser editing.

@@ -1,0 +1,108 @@
+name: animated-explainer
+version: "0.1"
+description: >-
+  Zero-key entry point. Input: a topic plus an audience (e.g. "how black
+  holes form, for high schoolers"). Output: 60-120 second narrated explainer
+  with AI visuals, music, captions, end card. Runs on free local stack out
+  of the box (Piper TTS, Remotion compose, free stock); upgrades to premium
+  models when keys are present.
+type: ai_generated
+
+stages:
+  - name: research
+    director_skill: skills/pipelines/animated-explainer/research.md
+    capabilities_required: []
+    artifacts_produced: [research_brief, source_citations]
+    human_approval_default: true
+    review_focus:
+      - 15+ sources across YouTube, news, academic, Reddit, HN
+      - claims grounded in citations, not hallucinated
+
+  - name: script
+    director_skill: skills/pipelines/animated-explainer/script.md
+    capabilities_required: []
+    artifacts_produced: [script, voice_direction]
+    human_approval_default: true
+    review_focus:
+      - hook in first 2 seconds
+      - reading level matches declared audience
+      - voice direction notes (pace, energy, emphasis) included
+
+  - name: scene_plan
+    director_skill: skills/pipelines/animated-explainer/scene-plan.md
+    capabilities_required: []
+    artifacts_produced: [scene_plan]
+    human_approval_default: true
+    review_focus:
+      - one scene per beat, with explicit visual brief
+      - pacing matches script duration
+
+  - name: assets
+    director_skill: skills/pipelines/animated-explainer/assets.md
+    capabilities_required: [image_gen, video_gen]
+    artifacts_produced: [asset_manifest]
+    human_approval_default: false
+    review_focus:
+      - asset count matches scene plan
+      - slideshow risk gate fires if asset mix is mostly stills
+
+  - name: narrate
+    director_skill: skills/pipelines/animated-explainer/narrate.md
+    capabilities_required: [tts]
+    artifacts_produced: [narration_audio]
+    human_approval_default: false
+    review_focus:
+      - narration matches script word-for-word
+      - audio levels target -16 LUFS
+
+  - name: score
+    director_skill: skills/pipelines/animated-explainer/score.md
+    capabilities_required: [music_gen]
+    artifacts_produced: [music_track]
+    human_approval_default: false
+    optional: true
+
+  - name: caption
+    director_skill: skills/pipelines/animated-explainer/caption.md
+    capabilities_required: [caption]
+    artifacts_produced: [caption_track]
+    human_approval_default: false
+    review_focus:
+      - word-level timing aligned to narration
+      - safe zone respected for the chosen aspect
+
+  - name: render
+    director_skill: skills/pipelines/animated-explainer/render.md
+    capabilities_required: [compose, publish]
+    artifacts_produced: [final_explainer, render_report]
+    human_approval_default: true
+    review_focus:
+      - delivery promise gate passes
+      - ffprobe + frame sample + audio analysis all clean
+
+review:
+  reviewer_skill: skills/meta/reviewer.md
+  max_rounds: 2
+
+budget:
+  default_cap_usd: 1.50
+  mode: cap
+
+checkpoint:
+  policy: guided
+
+delivery_promise:
+  target_aspect: "16:9"
+  requires_motion: true
+  requires_audio: true
+  requires_captions: true
+  requires_narration: true
+  requires_music: false
+  duration_tolerance_sec: 2.0
+
+playbooks:
+  - styles/playbooks/clean-modern.yaml
+  - styles/playbooks/data-viz.yaml
+  - styles/playbooks/cinematic-warm.yaml
+
+tags: [explainer, zero_key, free_path_friendly]
