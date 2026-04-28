@@ -1,0 +1,43 @@
+{
+  "name": "podcast-clean",
+  "display_name": "Podcast Clean",
+  "description": "Single readable line, white sans-serif with subtle drop shadow. Built for podcast clip repurposing where the audio carries — no kinetic effects, no color cycling, no distraction.",
+  "style_family": "sentence",
+  "typography": {
+    "family": "Inter",
+    "weight": 600,
+    "italic": false,
+    "text_transform": "preserve",
+    "size_pct_of_height": 0.038,
+    "line_height": 1.3,
+    "letter_spacing_em": 0.0
+  },
+  "colors": {
+    "text": "#ffffff",
+    "background": null,
+    "outline": "#0c0c0c",
+    "outline_width_px": 3,
+    "shadow": "#00000060",
+    "shadow_offset_px": [0, 2]
+  },
+  "position": {
+    "y_pct": 0.78,
+    "alignment": "center",
+    "max_width_pct": 0.82
+  },
+  "safe_zone": {
+    "top_pct": 0.05,
+    "bottom_pct": 0.18
+  },
+  "motion": {
+    "type": "fade",
+    "duration_ms": 150,
+    "easing": "ease_out"
+  },
+  "emphasis": {
+    "type": "none"
+  },
+  "max_words_per_card": 8,
+  "tags": ["podcast", "minimal", "professional", "high_legibility"],
+  "contains_emojis": false
+}

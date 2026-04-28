@@ -1,0 +1,43 @@
+{
+  "name": "meme-impact",
+  "display_name": "Meme Impact",
+  "description": "The classic Impact-font meme look — uppercase, thick black outline, top placement. For comedy edits and meme remixes only.",
+  "style_family": "sentence",
+  "typography": {
+    "family": "Impact",
+    "weight": 900,
+    "italic": false,
+    "text_transform": "uppercase",
+    "size_pct_of_height": 0.07,
+    "line_height": 1.0,
+    "letter_spacing_em": 0.02
+  },
+  "colors": {
+    "text": "#ffffff",
+    "background": null,
+    "outline": "#000000",
+    "outline_width_px": 8,
+    "shadow": null,
+    "shadow_offset_px": [0, 0]
+  },
+  "position": {
+    "y_pct": 0.18,
+    "alignment": "center",
+    "max_width_pct": 0.9
+  },
+  "safe_zone": {
+    "top_pct": 0.05,
+    "bottom_pct": 0.10
+  },
+  "motion": {
+    "type": "none",
+    "duration_ms": 0,
+    "easing": "linear"
+  },
+  "emphasis": {
+    "type": "none"
+  },
+  "max_words_per_card": 6,
+  "tags": ["meme", "comedy", "remix"],
+  "contains_emojis": false
+}

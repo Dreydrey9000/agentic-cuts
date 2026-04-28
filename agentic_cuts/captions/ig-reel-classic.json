@@ -1,0 +1,43 @@
+{
+  "name": "ig-reel-classic",
+  "display_name": "Instagram Reel Classic",
+  "description": "Instagram's native auto-caption style. White uppercase with thin black outline, sits in the upper-middle to dodge the comments and share UI strip.",
+  "style_family": "kinetic",
+  "typography": {
+    "family": "Helvetica Neue",
+    "weight": 800,
+    "italic": false,
+    "text_transform": "uppercase",
+    "size_pct_of_height": 0.05,
+    "line_height": 1.1,
+    "letter_spacing_em": 0.01
+  },
+  "colors": {
+    "text": "#ffffff",
+    "background": null,
+    "outline": "#0c0c0c",
+    "outline_width_px": 4,
+    "shadow": null,
+    "shadow_offset_px": [0, 0]
+  },
+  "position": {
+    "y_pct": 0.58,
+    "alignment": "center",
+    "max_width_pct": 0.85
+  },
+  "safe_zone": {
+    "top_pct": 0.10,
+    "bottom_pct": 0.20
+  },
+  "motion": {
+    "type": "fade",
+    "duration_ms": 100,
+    "easing": "ease_out"
+  },
+  "emphasis": {
+    "type": "none"
+  },
+  "max_words_per_card": 4,
+  "tags": ["instagram", "reels", "native_look", "broad_appeal"],
+  "contains_emojis": false
+}

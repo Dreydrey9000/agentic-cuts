@@ -1,0 +1,43 @@
+{
+  "name": "quote-card",
+  "display_name": "Quote Card",
+  "description": "Large centered block for callout quotes — speaker attribution moments, key payoffs, end-card sound bites.",
+  "style_family": "quote",
+  "typography": {
+    "family": "Playfair Display",
+    "weight": 800,
+    "italic": true,
+    "text_transform": "preserve",
+    "size_pct_of_height": 0.062,
+    "line_height": 1.2,
+    "letter_spacing_em": 0.0
+  },
+  "colors": {
+    "text": "#ffffff",
+    "background": "#000000cc",
+    "outline": null,
+    "outline_width_px": 0,
+    "shadow": null,
+    "shadow_offset_px": [0, 0]
+  },
+  "position": {
+    "y_pct": 0.5,
+    "alignment": "center",
+    "max_width_pct": 0.72
+  },
+  "safe_zone": {
+    "top_pct": 0.10,
+    "bottom_pct": 0.10
+  },
+  "motion": {
+    "type": "fade",
+    "duration_ms": 500,
+    "easing": "ease_in_out"
+  },
+  "emphasis": {
+    "type": "none"
+  },
+  "max_words_per_card": 18,
+  "tags": ["quote", "callout", "podcast", "interview"],
+  "contains_emojis": false
+}

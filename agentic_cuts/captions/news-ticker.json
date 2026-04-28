@@ -1,0 +1,44 @@
+{
+  "name": "news-ticker",
+  "display_name": "News Ticker",
+  "description": "Lower-third name plate with rolling captions. Built for interview, panel, and on-camera reporter style content.",
+  "style_family": "minimal",
+  "typography": {
+    "family": "Inter",
+    "weight": 700,
+    "italic": false,
+    "text_transform": "preserve",
+    "size_pct_of_height": 0.034,
+    "line_height": 1.25,
+    "letter_spacing_em": 0.0
+  },
+  "colors": {
+    "text": "#ffffff",
+    "background": "#0c1f3a",
+    "outline": null,
+    "outline_width_px": 0,
+    "shadow": null,
+    "shadow_offset_px": [0, 0]
+  },
+  "position": {
+    "y_pct": 0.85,
+    "alignment": "left",
+    "max_width_pct": 0.6
+  },
+  "safe_zone": {
+    "top_pct": 0.05,
+    "bottom_pct": 0.08
+  },
+  "motion": {
+    "type": "slide",
+    "duration_ms": 240,
+    "easing": "ease_out"
+  },
+  "emphasis": {
+    "type": "color",
+    "color": "#ffd200"
+  },
+  "max_words_per_card": 14,
+  "tags": ["news", "interview", "panel", "reporter"],
+  "contains_emojis": false
+}

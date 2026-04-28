@@ -1,0 +1,45 @@
+{
+  "name": "mr-beast-pop",
+  "display_name": "MrBeast Pop",
+  "description": "Massive pop-in animation with a hot red active word and white static text. Maximum visual energy — built for thumb-stopping moments.",
+  "style_family": "kinetic",
+  "typography": {
+    "family": "Montserrat",
+    "weight": 900,
+    "italic": false,
+    "text_transform": "uppercase",
+    "size_pct_of_height": 0.072,
+    "line_height": 1.0,
+    "letter_spacing_em": 0.0
+  },
+  "colors": {
+    "text": "#ffffff",
+    "background": null,
+    "outline": "#000000",
+    "outline_width_px": 10,
+    "shadow": "#00000099",
+    "shadow_offset_px": [0, 6]
+  },
+  "position": {
+    "y_pct": 0.55,
+    "alignment": "center",
+    "max_width_pct": 0.9
+  },
+  "safe_zone": {
+    "top_pct": 0.12,
+    "bottom_pct": 0.22
+  },
+  "motion": {
+    "type": "pop",
+    "duration_ms": 180,
+    "easing": "spring"
+  },
+  "emphasis": {
+    "type": "color+scale",
+    "color": "#ff2d3a",
+    "scale_factor": 1.25
+  },
+  "max_words_per_card": 3,
+  "tags": ["youtube", "shorts", "high_energy", "thumbnail_match"],
+  "contains_emojis": false
+}

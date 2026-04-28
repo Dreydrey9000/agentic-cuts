@@ -1,0 +1,45 @@
+{
+  "name": "tiktok-yellow-bold",
+  "display_name": "TikTok Yellow Bold",
+  "description": "Punchy yellow uppercase with thick white outline. The default look for high-energy short-form. Bouncy word emphasis on the active word.",
+  "style_family": "kinetic",
+  "typography": {
+    "family": "Inter",
+    "weight": 900,
+    "italic": false,
+    "text_transform": "uppercase",
+    "size_pct_of_height": 0.06,
+    "line_height": 1.1,
+    "letter_spacing_em": 0.02
+  },
+  "colors": {
+    "text": "#ffd200",
+    "background": null,
+    "outline": "#000000",
+    "outline_width_px": 8,
+    "shadow": "#00000080",
+    "shadow_offset_px": [0, 4]
+  },
+  "position": {
+    "y_pct": 0.6,
+    "alignment": "center",
+    "max_width_pct": 0.82
+  },
+  "safe_zone": {
+    "top_pct": 0.12,
+    "bottom_pct": 0.22
+  },
+  "motion": {
+    "type": "bounce",
+    "duration_ms": 220,
+    "easing": "spring"
+  },
+  "emphasis": {
+    "type": "color+scale",
+    "color": "#ffffff",
+    "scale_factor": 1.15
+  },
+  "max_words_per_card": 3,
+  "tags": ["tiktok", "viral", "high_energy", "short_form"],
+  "contains_emojis": false
+}

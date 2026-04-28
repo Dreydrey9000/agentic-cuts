@@ -1,0 +1,44 @@
+{
+  "name": "courtroom-mono",
+  "display_name": "Courtroom Mono",
+  "description": "Heavy monospace, bottom strip — the 'serious documentary' / true-crime / tech-deep-dive look. Maximum gravitas, zero personality.",
+  "style_family": "sentence",
+  "typography": {
+    "family": "JetBrains Mono",
+    "weight": 800,
+    "italic": false,
+    "text_transform": "uppercase",
+    "size_pct_of_height": 0.04,
+    "line_height": 1.2,
+    "letter_spacing_em": 0.05
+  },
+  "colors": {
+    "text": "#f0ebe0",
+    "background": "#000000cc",
+    "outline": null,
+    "outline_width_px": 0,
+    "shadow": null,
+    "shadow_offset_px": [0, 0]
+  },
+  "position": {
+    "y_pct": 0.86,
+    "alignment": "left",
+    "max_width_pct": 0.85
+  },
+  "safe_zone": {
+    "top_pct": 0.05,
+    "bottom_pct": 0.06
+  },
+  "motion": {
+    "type": "typewriter",
+    "duration_ms": 400,
+    "easing": "linear"
+  },
+  "emphasis": {
+    "type": "color",
+    "color": "#ff2d3a"
+  },
+  "max_words_per_card": 12,
+  "tags": ["true_crime", "documentary", "deep_dive", "serious"],
+  "contains_emojis": false
+}

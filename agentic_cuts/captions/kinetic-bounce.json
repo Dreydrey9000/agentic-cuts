@@ -1,0 +1,44 @@
+{
+  "name": "kinetic-bounce",
+  "display_name": "Kinetic Bounce",
+  "description": "Word-by-word with a soft bounce animation. The 'kinetic typography' look — stays readable, adds rhythm without yelling.",
+  "style_family": "animated_word",
+  "typography": {
+    "family": "Inter",
+    "weight": 800,
+    "italic": false,
+    "text_transform": "preserve",
+    "size_pct_of_height": 0.06,
+    "line_height": 1.15,
+    "letter_spacing_em": 0.0
+  },
+  "colors": {
+    "text": "#ffffff",
+    "background": null,
+    "outline": "#0c0c0c",
+    "outline_width_px": 5,
+    "shadow": "#00000080",
+    "shadow_offset_px": [0, 3]
+  },
+  "position": {
+    "y_pct": 0.62,
+    "alignment": "center",
+    "max_width_pct": 0.78
+  },
+  "safe_zone": {
+    "top_pct": 0.12,
+    "bottom_pct": 0.22
+  },
+  "motion": {
+    "type": "bounce",
+    "duration_ms": 240,
+    "easing": "spring"
+  },
+  "emphasis": {
+    "type": "scale",
+    "scale_factor": 1.12
+  },
+  "max_words_per_card": 1,
+  "tags": ["kinetic", "rhythm", "viral", "tiktok", "reels"],
+  "contains_emojis": false
+}

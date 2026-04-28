@@ -1,0 +1,43 @@
+{
+  "name": "minimal-white",
+  "display_name": "Minimal White",
+  "description": "Small white sans-serif at the bottom. The classic Netflix-style subtitle look — gets out of the way of the footage entirely.",
+  "style_family": "minimal",
+  "typography": {
+    "family": "Inter",
+    "weight": 500,
+    "italic": false,
+    "text_transform": "preserve",
+    "size_pct_of_height": 0.032,
+    "line_height": 1.25,
+    "letter_spacing_em": 0.0
+  },
+  "colors": {
+    "text": "#ffffff",
+    "background": null,
+    "outline": "#0c0c0c",
+    "outline_width_px": 2,
+    "shadow": null,
+    "shadow_offset_px": [0, 0]
+  },
+  "position": {
+    "y_pct": 0.88,
+    "alignment": "center",
+    "max_width_pct": 0.72
+  },
+  "safe_zone": {
+    "top_pct": 0.05,
+    "bottom_pct": 0.08
+  },
+  "motion": {
+    "type": "none",
+    "duration_ms": 0,
+    "easing": "linear"
+  },
+  "emphasis": {
+    "type": "none"
+  },
+  "max_words_per_card": 12,
+  "tags": ["minimal", "documentary", "long_form", "youtube_horizontal"],
+  "contains_emojis": false
+}
