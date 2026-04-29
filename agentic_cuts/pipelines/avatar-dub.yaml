@@ -1,0 +1,90 @@
+name: avatar-dub
+version: "0.1"
+description: >-
+  HeyGen Avatar IV path, open-source. Input: a talking-head video in language
+  L1. Output: same speaker, same face, same voice timbre, lips moving in
+  language L2. Built on SadTalker / LivePortrait + F5-TTS voice clone +
+  WhisperX word-level timing alignment. Higgsfield Speak v2 wins as a paid
+  premium provider when keys are present and character_id consistency matters.
+type: hybrid
+
+stages:
+  - name: ingest
+    director_skill: skills/pipelines/avatar-dub/ingest.md
+    capabilities_required: []
+    artifacts_produced: [source_meta, face_reference]
+    human_approval_default: false
+    review_focus:
+      - source video probed cleanly
+      - one clean front-facing keyframe extracted as the face reference
+
+  - name: transcribe_source
+    director_skill: skills/pipelines/avatar-dub/transcribe-source.md
+    capabilities_required: [stt]
+    artifacts_produced: [source_transcript, source_word_timings]
+    human_approval_default: false
+    review_focus:
+      - word-level timing on every word
+      - language detected matches the speaker
+
+  - name: translate
+    director_skill: skills/pipelines/avatar-dub/translate.md
+    capabilities_required: [translate]
+    artifacts_produced: [target_script]
+    human_approval_default: true
+    review_focus:
+      - target script preserves meaning and idiom
+      - per-segment word counts roughly match (within 30%) so lip-sync is plausible
+      - culture-specific references adapted, not literal
+
+  - name: voice_clone_synthesize
+    director_skill: skills/pipelines/avatar-dub/voice-clone.md
+    capabilities_required: [tts]
+    artifacts_produced: [target_audio, alignment_map]
+    human_approval_default: false
+    review_focus:
+      - voice timbre preserves the source speaker's character
+      - clipped speech rate stays inside ±10% of original
+
+  - name: lip_sync
+    director_skill: skills/pipelines/avatar-dub/lip-sync.md
+    capabilities_required: [lip_sync, avatar]
+    artifacts_produced: [dubbed_clip]
+    human_approval_default: true
+    review_focus:
+      - lip-sync drift under 80ms across the clip
+      - face stability — no warping on wide-mouth phonemes
+      - micro-expressions preserved (eye blink, brow movement)
+
+  - name: render
+    director_skill: skills/pipelines/avatar-dub/render.md
+    capabilities_required: [compose, publish]
+    artifacts_produced: [final_dubbed_clip, render_report]
+    human_approval_default: true
+    review_focus:
+      - delivery promise gate passes
+      - audio levels match the source recording loudness target
+
+review:
+  reviewer_skill: skills/meta/reviewer.md
+  max_rounds: 2
+
+budget:
+  default_cap_usd: 1.50
+  mode: cap
+
+checkpoint:
+  policy: guided
+
+delivery_promise:
+  target_aspect: "9:16"
+  requires_motion: true
+  requires_audio: true
+  requires_captions: false
+  requires_narration: true
+  duration_tolerance_sec: 1.5
+
+playbooks:
+  - styles/playbooks/clean-modern.yaml
+
+tags: [dub, lip_sync, multilingual, wow_feature]

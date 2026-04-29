@@ -21,10 +21,11 @@ EXPECTED_NAMES = {
     "documentary-montage",
     "podcast-repurpose",
     "animated-explainer",
+    "avatar-dub",  # added in v0.4 — open-source HeyGen Avatar IV path
 }
 
 
-def test_all_5_launch_pipelines_load():
+def test_all_6_launch_pipelines_load():
     pipelines = discover_pipelines(PIPELINES_DIR)
     assert set(pipelines) == EXPECTED_NAMES
 
