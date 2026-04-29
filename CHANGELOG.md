@@ -36,6 +36,24 @@ All notable changes to this project will be documented here. Format follows [Kee
   `tiktok-yellow-bold`, `hormozi-style`, `mr-beast-pop`, `podcast-clean`, `cinematic-fade`, `minimal-white`, `kinetic-bounce`, `quote-card`, `ig-reel-classic`, `youtube-shorts-clean`, `documentary-subtitle`, `meme-impact`, `educational-clear`, `news-ticker`, `vlog-handwritten`, `dark-mode-neon`, `comedy-zoom`, `luxury-serif`, `courtroom-mono`, `tiktok-emoji-burst` (the only opt-in emoji preset; all others honor the no-emojis rule).
 - 36 new tests (8 brand-kit + 28 caption-preset including 20 parametrized per-preset validations). **80 tests passing total.**
 
+## [2026-04-29]
+
+### Added (Task 10 — avatar lip-sync dub, open-source HeyGen Avatar IV path)
+- `agentic_cuts/tools/avatar/sadtalker.py` — free local talking-head from image+audio. Detects via PATH binary OR Python module OR canonical install paths.
+- `agentic_cuts/tools/avatar/liveportrait.py` — free local Kuaishou KwaiVGI driven-portrait, micro-expression strong.
+- `agentic_cuts/tools/avatar/higgsfield_speak.py` — paid Higgsfield Speak v2 with character_id consistency. Optional, gated behind HIGGSFIELD_API_KEY + SECRET.
+- `agentic_cuts/tools/audio/f5_tts.py` — open-source F5-TTS voice clone for the dub voice synthesis stage.
+- `agentic_cuts/pipelines/avatar-dub.yaml` — 6-stage manifest: ingest → transcribe_source → translate → voice_clone_synthesize → lip_sync → render.
+- `skills/pipelines/avatar-dub/` — 6 director skills covering each stage with Selector wiring, review focus, approval gates, and "what NOT to do" boundaries.
+- Test updates: now 6 launch pipelines, 12 expected provider tools. **100 tests passing.**
+
+### Mobile polish (Task 18 — Drey overnight ask)
+- Added `@media (max-width: 600px)` block to all 3 landing pages (Drey, 1BB, VE).
+- Stacked CTA buttons on phones, hide nav links except final, reduce padding, smaller fonts.
+- Added theme-color, apple-mobile-web-app-capable, viewport-fit=cover meta tags.
+- `html, body { max-width: 100%; overflow-x: hidden; }` belt-and-suspenders against horizontal scroll.
+- All 3 redeployed to Cloudflare Pages, mobile breakpoint verified live.
+
 ### Designed (architecture decisions, all confirmed by Drey 2026-04-28)
 - Tenant ↔ core link: git submodule for v0, switch to published `pip`/`npm` packages once 5+ tenants exist.
 - Timeline UI: local-first (Tauri or Electron) — HN explicitly hates browser editing.

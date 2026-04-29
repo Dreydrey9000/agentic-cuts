@@ -27,16 +27,26 @@ def reg():
 
 
 def test_discovery_finds_provider_tools(reg):
-    assert len(reg) >= 7, f"expected ≥7 tools, registry has {len(reg)}: {[t.name for t in reg]}"
+    assert len(reg) >= 12, f"expected ≥12 tools, registry has {len(reg)}: {[t.name for t in reg]}"
     expected = {
+        # TTS
         "piper_tts",
         "kokoro_tts",
         "elevenlabs_tts",
+        "f5_tts",
+        # STT
         "whisperx_stt",
+        # stock
         "pexels_stock",
+        # video gen
         "fal_video",
         "replicate_video",
+        # music
         "acestep_music",
+        # avatar / lip-sync
+        "sadtalker",
+        "liveportrait",
+        "higgsfield_speak",
     }
     actual = {t.name for t in reg}
     missing = expected - actual
