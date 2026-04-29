@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic Cuts — Drey</title>
+<meta name="description" content="The agentic NLE. Real timeline, deterministic agent, runs locally. Drey's daily-driver instance.">
+<link rel="preconnect" href="https://rsms.me/">
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<style>
+  :root {
+    --ink:    #0c0c0c;
+    --paper:  #f5f1e8;
+    --primary:#ffd200;
+    --accent: #ff2d3a;
+    --cyan:   #00e5ff;
+    --muted:  #8a8a8a;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  header {
+    padding: 28px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand { font-weight: 900; letter-spacing: -0.01em; font-size: 18px; }
+  .brand b { color: var(--primary); }
+  nav a {
+    color: var(--paper); text-decoration: none; margin-left: 28px;
+    font-weight: 500; font-size: 14px; opacity: 0.75;
+  }
+  nav a:hover { opacity: 1; color: var(--primary); }
+
+  .hero {
+    padding: 96px 0 80px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  h1 {
+    font-size: clamp(48px, 9vw, 132px);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    margin: 0 0 32px;
+    text-transform: none;
+  }
+  h1 b { color: var(--primary); }
+  .lede {
+    font-size: clamp(18px, 2.2vw, 24px);
+    max-width: 720px;
+    color: rgba(245,241,232,0.78);
+    margin: 0 0 40px;
+  }
+  .ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 16px;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: transform .12s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--ink);
+  }
+  .btn-secondary {
+    border-color: rgba(245,241,232,0.25);
+    color: var(--paper);
+  }
+  .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+  .meta-row {
+    margin-top: 48px;
+    display: flex; gap: 32px; flex-wrap: wrap;
+    color: rgba(245,241,232,0.55);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .meta-row .pill {
+    padding: 4px 12px;
+    border: 1px solid rgba(245,241,232,0.18);
+    border-radius: 99px;
+  }
+
+  section { padding: 80px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  section h2 {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0 0 20px;
+  }
+  section h2 b { color: var(--primary); }
+  section .lede { margin-bottom: 60px; }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 800px) { .grid-3 { grid-template-columns: 1fr; } }
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 32px;
+  }
+  .card h3 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    color: var(--primary);
+  }
+  .card p { color: rgba(245,241,232,0.7); margin: 0; font-size: 15px; }
+
+  .pipelines { display: grid; grid-template-columns: 1fr; gap: 1px; background: rgba(255,255,255,0.08); }
+  .row {
+    background: var(--ink);
+    padding: 24px 32px;
+    display: grid;
+    grid-template-columns: 240px 1fr 100px;
+    gap: 24px;
+    align-items: center;
+  }
+  @media (max-width: 800px) { .row { grid-template-columns: 1fr; gap: 8px; padding: 20px 16px; } }
+  .row .name { font-weight: 800; font-size: 18px; color: var(--paper); }
+  .row .desc { color: rgba(245,241,232,0.65); font-size: 14px; }
+  .row .badge {
+    text-align: right;
+    font-size: 12px;
+    color: var(--cyan);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  @media (max-width: 800px) { .row .badge { text-align: left; } }
+
+  .quote {
+    background: rgba(255,210,0,0.08);
+    border-left: 3px solid var(--primary);
+    padding: 32px 40px;
+    margin: 60px 0;
+    font-size: 22px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .quote .who { display: block; font-size: 14px; font-weight: 500; color: rgba(245,241,232,0.55); margin-top: 16px; letter-spacing: 0.02em; }
+
+  footer {
+    padding: 60px 0;
+    color: rgba(245,241,232,0.4);
+    font-size: 14px;
+  }
+  footer a { color: var(--primary); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 32px;
+  }
+  @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr; } }
+  .footer-grid h4 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); margin: 0 0 16px;
+  }
+  .footer-grid li { list-style: none; padding: 4px 0; }
+  ul { padding: 0; margin: 0; }
+  .accent { color: var(--accent); }
+  .cyan { color: var(--cyan); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">Agentic Cuts <b>· Drey</b></div>
+    <nav>
+      <a href="#what">What it is</a>
+      <a href="#features">Features</a>
+      <a href="#pipelines">Pipelines</a>
+      <a href="https://github.com/Dreydrey9000/agentic-cuts">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<div class="wrap">
+  <section class="hero">
+    <h1>The <b>agentic</b><br>NLE.</h1>
+    <p class="lede">Real timeline. Deterministic agent. Runs locally. Built so the next video you ship walks out of Claude Code, not a chat window.</p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="https://github.com/Dreydrey9000/agentic-cuts">View on GitHub</a>
+      <a class="btn btn-secondary" href="#what">How it works</a>
+    </div>
+    <div class="meta-row">
+      <span class="pill">Apache 2.0</span>
+      <span class="pill">Python core, TypeScript timeline</span>
+      <span class="pill">Multi-tenant by design</span>
+      <span class="pill">99 tests, all passing</span>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section id="what">
+    <h2>One core engine.<br><b>Three brand instances.</b></h2>
+    <p class="lede">This is Drey's daily-driver instance — Inter 900, yellow primary, hormozi-style captions baked in. The same engine ships to 1 Button Business and Viral Editz with their own brand kits. Spinning up another tenant takes one bash script.</p>
+    <div class="quote">
+      The agent is the orchestrator. Tools are its hands. The timeline is the source of truth.
+      <span class="who">— Agentic Cuts mental model</span>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section id="features">
+    <h2>What's <b>different.</b></h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Determinism</h3>
+        <p>Every tool takes a seed. Same prompt + seed + model version = byte-identical output, cached on disk. Re-runs are free. The opposite of every closed video tool that varies frame-level decisions every time you click render.</p>
+      </div>
+      <div class="card">
+        <h3>Real timeline</h3>
+        <p>Not chat-only. Mosaic and Cardboard admit chat is the wrong UX for video. We ship a timeline you can scrub, drag, and override. The agent edits the JSON. You supervise the gestures.</p>
+      </div>
+      <div class="card">
+        <h3>Hard-stop budget</h3>
+        <p>OpenMontage warns when you blow past your cap. We kill the run. CAP mode raises a real exception. No surprise bills. No zombie renders chewing API credit at three in the morning.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section id="pipelines">
+    <h2>Five <b>launch pipelines.</b></h2>
+    <p class="lede">Not twelve. Five. Picked to cover ninety percent of what creators actually ship.</p>
+    <div class="pipelines">
+      <div class="row">
+        <div class="name">clip-factory</div>
+        <div class="desc">Long-form footage to ranked verticals with kinetic captions. Drey's daily Viral Editz driver.</div>
+        <div class="badge">9:16 · daily</div>
+      </div>
+      <div class="row">
+        <div class="name">talking-head</div>
+        <div class="desc">Footage-led speaker reels. Optional dub with lip-sync drift under eighty milliseconds.</div>
+        <div class="badge">9:16 · creator</div>
+      </div>
+      <div class="row">
+        <div class="name">documentary-montage</div>
+        <div class="desc">Real-footage path nobody else does well. CLIP-indexed corpus from Archive.org, NASA, Wikimedia.</div>
+        <div class="badge">16:9 · zero key</div>
+      </div>
+      <div class="row">
+        <div class="name">podcast-repurpose</div>
+        <div class="desc">Audio-first, speaker-aware. Diarization gate, eight stages, per-speaker caption attribution.</div>
+        <div class="badge">9:16 · client</div>
+      </div>
+      <div class="row">
+        <div class="name">animated-explainer</div>
+        <div class="desc">Zero-key entry point. Free local stack out of the box; upgrades to premium models when keys are present.</div>
+        <div class="badge">16:9 · free</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="font-size: 16px; margin-bottom: 12px;">Agentic Cuts <b>· Drey</b></div>
+        <p style="margin: 0 0 16px; max-width: 380px;">Open-source agentic NLE. Apache two point oh. The repo is the source of truth — what you see here is the daily-driver tenant Drey ships content from.</p>
+        <p style="margin: 0;">Built by Drey. Multi-tenant by design.</p>
+      </div>
+      <div>
+        <h4>Engine</h4>
+        <ul>
+          <li><a href="https://github.com/Dreydrey9000/agentic-cuts">Repo</a></li>
+          <li><a href="https://github.com/Dreydrey9000/agentic-cuts/blob/main/ARCHITECTURE.md">Architecture</a></li>
+          <li><a href="https://github.com/Dreydrey9000/agentic-cuts/blob/main/CHANGELOG.md">Changelog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Tenants</h4>
+        <ul>
+          <li><span class="cyan">cuts.dreytools.com</span> · Drey</li>
+          <li>cuts.1bbcommunity.com · 1BB</li>
+          <li>cuts.ve.tools · Viral Editz</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
