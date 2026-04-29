@@ -66,15 +66,6 @@ class BrandVoice(BaseModel):
     """Free-form style direction (e.g. 'warm, conversational, slight sarcasm')."""
 
 
-class BrandIntroOutro(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    intro_clip_path: str | None = None
-    intro_duration_sec: float = 0.0
-    outro_clip_path: str | None = None
-    outro_duration_sec: float = 0.0
-
-
 class BrandCaptionDefaults(BaseModel):
     """Captioning defaults — points to a preset name in `agentic_cuts/captions/`."""
 
@@ -101,7 +92,6 @@ class BrandKit(BaseModel):
     secondary_typography: BrandTypography | None = None
     logo: BrandLogo = Field(default_factory=BrandLogo)
     voice: BrandVoice
-    intro_outro: BrandIntroOutro = Field(default_factory=BrandIntroOutro)
     captions: BrandCaptionDefaults = Field(default_factory=BrandCaptionDefaults)
     default_pipelines: list[str] = Field(default_factory=list)
     """Pipelines this tenant uses by default. Empty = all 5 launch pipelines available."""

@@ -18,8 +18,19 @@ class PipelineLoadError(RuntimeError):
     """Raised when a manifest fails to load or validate."""
 
 
-def load_manifest(path: Path | str) -> PipelineManifest:
-    """Load and validate one YAML manifest into a PipelineManifest object."""
+def load_manifest(
+    path: Path | str,
+    *,
+    validate_referenced_files: bool = False,
+    repo_root: Path | str | None = None,
+) -> PipelineManifest:
+    """Load and validate one YAML manifest into a PipelineManifest object.
+
+    `validate_referenced_files=True` checks that every stage's `director_skill`
+    path actually exists on disk relative to `repo_root` (defaults to the
+    parent-of-parent of the manifest file). Catches typos before a pipeline
+    blows up mid-execution.
+    """
     p = Path(path).expanduser().resolve()
     if not p.exists():
         raise PipelineLoadError(f"manifest not found: {p}")
@@ -30,9 +41,28 @@ def load_manifest(path: Path | str) -> PipelineManifest:
     if not isinstance(raw, dict):
         raise PipelineLoadError(f"{p}: top-level must be a mapping, got {type(raw).__name__}")
     try:
-        return PipelineManifest.model_validate(raw)
+        manifest = PipelineManifest.model_validate(raw)
     except ValidationError as exc:
         raise PipelineLoadError(f"validation failed for {p}:\n{exc}") from exc
+
+    if validate_referenced_files:
+        root = (
+            Path(repo_root).expanduser().resolve()
+            if repo_root is not None
+            else p.parent.parent.parent  # agentic_cuts/pipelines/x.yaml -> repo root
+        )
+        missing: list[str] = []
+        for stage in manifest.stages:
+            ref = (root / stage.director_skill).resolve()
+            if not ref.exists():
+                missing.append(f"  {stage.name} -> {stage.director_skill}")
+        if missing:
+            joined = "\n".join(missing)
+            raise PipelineLoadError(
+                f"{p.name}: missing director_skill files:\n{joined}\n"
+                f"(searched relative to {root})"
+            )
+    return manifest
 
 
 def discover_pipelines(directory: Path | str) -> dict[str, PipelineManifest]:

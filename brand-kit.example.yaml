@@ -43,12 +43,6 @@ voice:
   pitch: 0.0
   style_hint: "warm, conversational, slight irreverence"
 
-intro_outro:
-  intro_clip_path: assets/intro.mp4
-  intro_duration_sec: 1.5
-  outro_clip_path: assets/outro.mp4
-  outro_duration_sec: 2.0
-
 captions:
   default_preset: hormozi-style
   accent_color_override: "#ffd200"

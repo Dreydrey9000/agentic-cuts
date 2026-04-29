@@ -97,6 +97,25 @@ voice: {primary_voice: x}
         load_brand_kit(p)
 
 
+def test_intro_outro_is_no_longer_a_field(tmp_path: Path):
+    """YAGNI cleanup — BrandIntroOutro removed in council fixes. If anyone tries to
+    set intro_outro the strict schema rejects it."""
+    yaml_text = """
+tenant_id: x
+display_name: X
+palette:
+  - {name: primary, hex: '#ffffff'}
+primary_typography: {family: Inter}
+voice: {primary_voice: x}
+intro_outro:
+  intro_clip_path: assets/intro.mp4
+"""
+    p = tmp_path / "with_intro.yaml"
+    p.write_text(yaml_text)
+    with pytest.raises(BrandKitLoadError):
+        load_brand_kit(p)
+
+
 def test_missing_file_raises():
     with pytest.raises(BrandKitLoadError):
         load_brand_kit("/tmp/does-not-exist-agentic-cuts-test.yaml")

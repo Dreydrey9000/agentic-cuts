@@ -69,3 +69,34 @@ def test_cancel_releases_reservation():
     assert t.reserved_usd == 0.50
     t.cancel(rid)
     assert t.reserved_usd == 0.0
+
+
+def test_save_load_round_trip(tmp_path):
+    t = CostTracker(total_budget_usd=2.00, mode=BudgetMode.CAP)
+    rid1 = t.estimate("tts", 0.30)
+    t.reserve(rid1)
+    t.reconcile(rid1, 0.25)
+    rid2 = t.estimate("video", 0.50)
+    t.reserve(rid2)
+    # rid2 still open
+
+    save_path = tmp_path / "cost.json"
+    t.save(save_path)
+    assert save_path.exists()
+
+    restored = CostTracker.load(save_path)
+    assert restored.total_budget_usd == pytest.approx(2.00)
+    assert restored.mode == BudgetMode.CAP
+    assert restored.spent_usd == pytest.approx(0.25)
+    assert restored.reserved_usd == pytest.approx(0.50)
+    # reconciling the still-open reservation on the restored tracker works
+    restored.reconcile(rid2, 0.45)
+    assert restored.spent_usd == pytest.approx(0.70)
+
+
+def test_save_atomic_write(tmp_path):
+    """Save should never leave a half-written file behind on crash. Tempfile + rename pattern."""
+    t = CostTracker(total_budget_usd=1.00)
+    save_path = tmp_path / "cost.json"
+    t.save(save_path)
+    assert not (tmp_path / "cost.json.tmp").exists()

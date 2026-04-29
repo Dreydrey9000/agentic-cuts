@@ -12,12 +12,22 @@ Plan:
 
 from __future__ import annotations
 
+import bisect
 import json
 import shutil
 import subprocess
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
+
+
+FFPROBE_TIMEOUT_SEC = 60
+"""Hard timeout for keyframe probing. Long files cap here; the caller can override
+by passing pre-computed keyframes."""
+
+FFMPEG_TIMEOUT_SEC = 600
+"""Hard timeout for the actual cut. 10 min covers most clip-factory cuts; pass
+your own subprocess if you need longer."""
 
 
 class CutStrategy(str, Enum):
@@ -50,7 +60,7 @@ def _require_binary(name: str) -> str:
     return path
 
 
-def list_keyframes(source: Path | str) -> list[float]:
+def list_keyframes(source: Path | str, timeout_sec: float = FFPROBE_TIMEOUT_SEC) -> list[float]:
     """Return sorted list of keyframe timestamps (seconds) for the first video stream."""
     src = Path(source)
     ffprobe = _require_binary("ffprobe")
@@ -68,6 +78,7 @@ def list_keyframes(source: Path | str) -> list[float]:
         capture_output=True,
         text=True,
         check=True,
+        timeout=timeout_sec,
     )
     data = json.loads(out.stdout or "{}")
     frames = data.get("frames", []) or []
@@ -143,8 +154,17 @@ def plan_cut(
     )
 
 
-def keyframe_aligned_cut(plan: CutPlan, output: Path | str) -> Path:
-    """Execute a CutPlan via FFmpeg. Returns the output path on success."""
+def keyframe_aligned_cut(
+    plan: CutPlan,
+    output: Path | str,
+    *,
+    timeout_sec: float = FFMPEG_TIMEOUT_SEC,
+) -> Path:
+    """Execute a CutPlan via FFmpeg. Returns the output path on success.
+
+    Raises subprocess.TimeoutExpired if FFmpeg exceeds `timeout_sec`. The default
+    (10 minutes) handles clip-factory ranges; override for hour-long renders.
+    """
     ffmpeg = _require_binary("ffmpeg")
     out = Path(output)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -168,7 +188,7 @@ def keyframe_aligned_cut(plan: CutPlan, output: Path | str) -> Path:
             "-c:a", "aac", "-b:a", "192k",
             str(out),
         ]
-    subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True, timeout=timeout_sec)
     return out
 
 
@@ -176,15 +196,10 @@ def _nearest(sorted_floats: list[float], target: float) -> float:
     """Return the value in `sorted_floats` closest to `target`. List must be sorted."""
     if not sorted_floats:
         raise ValueError("sorted_floats empty")
-    # Binary search for insertion point.
-    lo, hi = 0, len(sorted_floats) - 1
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if sorted_floats[mid] < target:
-            lo = mid + 1
-        else:
-            hi = mid
-    candidates = [sorted_floats[lo]]
-    if lo > 0:
-        candidates.append(sorted_floats[lo - 1])
+    idx = bisect.bisect_left(sorted_floats, target)
+    candidates: list[float] = []
+    if idx < len(sorted_floats):
+        candidates.append(sorted_floats[idx])
+    if idx > 0:
+        candidates.append(sorted_floats[idx - 1])
     return min(candidates, key=lambda x: abs(x - target))
