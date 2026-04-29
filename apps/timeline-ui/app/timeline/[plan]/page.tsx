@@ -4,6 +4,11 @@ import { DEMO_PLANS } from "@/lib/render-plan";
 import { StageRow } from "@/components/stage-row";
 import { TimelineTrack } from "@/components/timeline-track";
 
+// Static export needs every dynamic-route variant pre-generated at build time.
+export function generateStaticParams() {
+  return Object.keys(DEMO_PLANS).map((plan) => ({ plan }));
+}
+
 export default async function TimelinePage({
   params,
 }: {
