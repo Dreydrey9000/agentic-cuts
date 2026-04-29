@@ -34,9 +34,11 @@ def test_profiles_known_keys():
     assert profile_for("reel").name == "reels"
 
 
-def test_registry_singleton_is_empty_until_discover():
-    from agentic_cuts import registry, ToolRegistry
+def test_registry_handles_missing_package_gracefully():
+    """Real assertion: discover against a missing package returns 0 + no crash."""
+    from agentic_cuts import ToolRegistry
 
-    assert isinstance(registry, ToolRegistry)
-    # discover() against a non-existent package should be a no-op, not crash
-    registry.discover("agentic_cuts.tools_does_not_exist")
+    reg = ToolRegistry()
+    n = reg.discover("agentic_cuts.tools_does_not_exist")
+    assert n == 0
+    assert len(reg) == 0

@@ -255,3 +255,4 @@ node_modules/
 # repo-root `lib/` is ignored. Our package directory `agentic_cuts/lib/` is
 # fine without negation rules.
 
+.gitnexus

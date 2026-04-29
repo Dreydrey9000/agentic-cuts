@@ -42,7 +42,6 @@ from agentic_cuts.lib.pipeline_loader import (
 from agentic_cuts.lib.brand_kit import (
     BrandCaptionDefaults,
     BrandColor,
-    BrandIntroOutro,
     BrandKit,
     BrandKitLoadError,
     BrandLogo,
@@ -80,7 +79,7 @@ __all__ = [
     "CheckpointConfig", "CheckpointPolicy", "DeliveryPromiseDefaults",
     "load_manifest", "discover_pipelines", "PipelineLoadError",
     "BrandKit", "BrandColor", "BrandTypography", "BrandLogo", "BrandVoice",
-    "BrandIntroOutro", "BrandCaptionDefaults", "load_brand_kit", "BrandKitLoadError",
+    "BrandCaptionDefaults", "load_brand_kit", "BrandKitLoadError",
     "CaptionPreset", "CaptionTypography", "CaptionColors", "CaptionPosition",
     "CaptionSafeZone", "CaptionMotion", "CaptionEmphasis", "StyleFamily",
     "load_preset", "discover_presets", "CaptionPresetLoadError",

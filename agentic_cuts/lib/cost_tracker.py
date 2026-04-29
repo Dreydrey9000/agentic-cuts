@@ -7,10 +7,12 @@ want hands-off generation can set a hard cap and walk away.
 
 from __future__ import annotations
 
+import json
 import logging
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from enum import Enum
+from pathlib import Path
 from typing import Any
 
 log = logging.getLogger(__name__)
@@ -170,6 +172,61 @@ class CostTracker:
             reservations_open=open_,
             reservations_closed=closed,
         )
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize the entire tracker (config + every reservation + spent total).
+
+        Use save()/load() for the file-on-disk path. This method exists for
+        callers who already manage their own checkpoint file.
+        """
+        return {
+            "version": 1,
+            "total_budget_usd": self.total_budget_usd,
+            "mode": self.mode.value,
+            "warn_at_pct": self.warn_at_pct,
+            "reserve_pct": self.reserve_pct,
+            "spent": self._spent,
+            "warned": self._warned,
+            "reservations": [asdict(r) for r in self._reservations.values()],
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "CostTracker":
+        if data.get("version") != 1:
+            raise ValueError(f"unsupported cost tracker version: {data.get('version')}")
+        tracker = cls(
+            total_budget_usd=float(data["total_budget_usd"]),
+            mode=BudgetMode(data["mode"]),
+            warn_at_pct=float(data.get("warn_at_pct", 0.80)),
+            reserve_pct=float(data.get("reserve_pct", 0.10)),
+        )
+        tracker._spent = float(data.get("spent", 0.0))
+        tracker._warned = bool(data.get("warned", False))
+        for r in data.get("reservations", []):
+            res = _Reservation(
+                rid=r["rid"],
+                action=r["action"],
+                estimate_usd=float(r["estimate_usd"]),
+                committed=bool(r.get("committed", False)),
+                actual_usd=float(r.get("actual_usd", 0.0)),
+                metadata=dict(r.get("metadata", {})),
+            )
+            tracker._reservations[res.rid] = res
+        return tracker
+
+    def save(self, path: Path | str) -> None:
+        """Atomic JSON write — survives crashes mid-write via tempfile + rename."""
+        p = Path(path).expanduser().resolve()
+        p.parent.mkdir(parents=True, exist_ok=True)
+        tmp = p.with_suffix(p.suffix + ".tmp")
+        tmp.write_text(json.dumps(self.to_dict(), indent=2, ensure_ascii=False),
+                       encoding="utf-8")
+        tmp.replace(p)
+
+    @classmethod
+    def load(cls, path: Path | str) -> "CostTracker":
+        p = Path(path).expanduser().resolve()
+        return cls.from_dict(json.loads(p.read_text(encoding="utf-8")))
 
     def _handle_overrun(self, projected: float, res: _Reservation) -> None:
         msg = (

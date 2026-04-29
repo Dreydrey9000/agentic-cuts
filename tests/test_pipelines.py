@@ -105,3 +105,28 @@ def test_stage_lookup_helpers():
     assert len(after_first) == len(p.stages) - 1
     with pytest.raises(KeyError):
         p.stage("does-not-exist")
+
+
+def test_validate_referenced_files_catches_missing_skills(tmp_path: Path):
+    """Council ask (Ousterhout): catch typos in director_skill paths before mid-pipeline blow-ups."""
+    bad = tmp_path / "broken.yaml"
+    bad.write_text(
+        """
+name: broken
+version: '0.1'
+description: 'references a director_skill file that does not exist'
+type: test
+delivery_promise:
+  target_aspect: '16:9'
+stages:
+  - name: phantom
+    director_skill: skills/this/does/not/exist.md
+"""
+    )
+    # Without the flag, loads fine.
+    m = load_manifest(bad)
+    assert m.name == "broken"
+    # With the flag pointed at tmp_path (which has no skills/), it raises.
+    with pytest.raises(PipelineLoadError) as exc_info:
+        load_manifest(bad, validate_referenced_files=True, repo_root=tmp_path)
+    assert "missing director_skill files" in str(exc_info.value)
