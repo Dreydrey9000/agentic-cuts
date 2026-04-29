@@ -107,6 +107,18 @@ def test_stage_lookup_helpers():
         p.stage("does-not-exist")
 
 
+def test_all_5_launch_pipelines_pass_strict_validation():
+    """All 5 real pipelines now have director skills on disk (real or placeholder)."""
+    repo_root = Path(__file__).resolve().parents[1]
+    for name in EXPECTED_NAMES:
+        m = load_manifest(
+            PIPELINES_DIR / f"{name}.yaml",
+            validate_referenced_files=True,
+            repo_root=repo_root,
+        )
+        assert m.name == name
+
+
 def test_validate_referenced_files_catches_missing_skills(tmp_path: Path):
     """Council ask (Ousterhout): catch typos in director_skill paths before mid-pipeline blow-ups."""
     bad = tmp_path / "broken.yaml"
